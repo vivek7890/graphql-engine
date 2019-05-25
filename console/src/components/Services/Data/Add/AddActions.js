@@ -196,7 +196,7 @@ const createTableSql = () => {
       '"' +
       '.' +
       '"' +
-      state.tableName.trim() +
+      state.tableName.trim().toLowerCase() +
       '"' +
       '(' +
       tableColumns +
@@ -210,7 +210,7 @@ const createTableSql = () => {
         '"' +
         '.' +
         '"' +
-        state.tableName.trim() +
+        state.tableName.trim().toLowerCase() +
         '"' +
         ' IS ' +
         "'" +
@@ -219,7 +219,10 @@ const createTableSql = () => {
     }
     // apply migrations
     const migrationName =
-      'create_table_' + currentSchema + '_' + state.tableName.trim();
+      'create_table_' +
+      currentSchema +
+      '_' +
+      state.tableName.trim().toLowerCase();
     const upQueryArgs = [];
     if (isUUIDDefault) {
       upQueryArgs.push({
@@ -234,7 +237,7 @@ const createTableSql = () => {
     upQueryArgs.push({
       type: 'add_existing_table_or_view',
       args: {
-        name: state.tableName.trim(),
+        name: state.tableName.trim().toLowerCase(),
         schema: currentSchema,
       },
     });
@@ -249,7 +252,7 @@ const createTableSql = () => {
       '"' +
       '.' +
       '"' +
-      state.tableName.trim() +
+      state.tableName.trim().toLowerCase() +
       '"';
     const downQuery = {
       type: 'bulk',
@@ -267,7 +270,7 @@ const createTableSql = () => {
     const customOnSuccess = () => {
       dispatch({ type: REQUEST_SUCCESS });
       dispatch({ type: SET_DEFAULTS });
-      dispatch(setTable(state.tableName.trim()));
+      dispatch(setTable(state.tableName.trim().toLowerCase()));
       dispatch(loadUntrackedRelations()).then(() =>
         dispatch(
           _push(
